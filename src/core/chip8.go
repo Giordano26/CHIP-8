@@ -2,33 +2,20 @@ package core
 
 import (
 	"os"
+
+	"github.com/hajimehoshi/ebiten"
 )
 
-var fontSet = []uint8{
-	0xF0, 0x90, 0x90, 0x90, 0xF0, //0
-	0x20, 0x60, 0x20, 0x20, 0x70, //1
-	0xF0, 0x10, 0xF0, 0x80, 0xF0, //2
-	0xF0, 0x10, 0xF0, 0x10, 0xF0, //3
-	0x90, 0x90, 0xF0, 0x10, 0x10, //4
-	0xF0, 0x80, 0xF0, 0x10, 0xF0, //5
-	0xF0, 0x80, 0xF0, 0x90, 0xF0, //6
-	0xF0, 0x10, 0x20, 0x40, 0x40, //7
-	0xF0, 0x90, 0xF0, 0x90, 0xF0, //8
-	0xF0, 0x90, 0xF0, 0x10, 0xF0, //9
-	0xF0, 0x90, 0xF0, 0x90, 0x90, //A
-	0xE0, 0x90, 0xE0, 0x90, 0xE0, //B
-	0xF0, 0x80, 0x80, 0x80, 0xF0, //C
-	0xE0, 0x90, 0x90, 0x90, 0xE0, //D
-	0xF0, 0x80, 0xF0, 0x80, 0xF0, //E
-	0xF0, 0x80, 0xF0, 0x80, 0x80, //F
-}
+const (
+	MEMORY_SIZE = 4096
+)
 
 type Chip8 struct {
-	display [32][64]byte // display size
+	display [64][32]byte // display size
 
 	memory [4096]byte // memory size 4k
 	vx     [16]byte   // cpu registers V0-VF
-	key    [16]byte   // input key
+	keys   [16]bool   // input key
 	stack  [16]uint16 // program counter stack
 
 	oc uint16 // current opcode
@@ -40,6 +27,27 @@ type Chip8 struct {
 	soundTImer byte
 
 	drawFlag bool
+}
+
+type Graphics struct {
+	chip8 *Chip8
+}
+
+func (c *Chip8) HandleInput() {
+	keyMap := map[ebiten.Key]int{
+		ebiten.Key1: 0x1, ebiten.Key2: 0x2, ebiten.Key3: 0x3, ebiten.Key4: 0xC,
+		ebiten.KeyQ: 0x4, ebiten.KeyW: 0x5, ebiten.KeyE: 0x6, ebiten.KeyR: 0xD,
+		ebiten.KeyA: 0x7, ebiten.KeyS: 0x8, ebiten.KeyD: 0x9, ebiten.KeyF: 0xE,
+		ebiten.KeyZ: 0xA, ebiten.KeyX: 0x0, ebiten.KeyC: 0xB, ebiten.KeyV: 0xF,
+	}
+
+	for key, value := range keyMap {
+		if ebiten.IsKeyPressed(key) {
+			c.keys[value] = true
+		} else {
+			c.keys[value] = false
+		}
+	}
 }
 
 func (c *Chip8) Initialize() {
@@ -71,9 +79,32 @@ func (c *Chip8) LoadROM(path string) error {
 	}
 
 	// Load ROM into memory starting at 0x200
-	for i := 0; i < len(rom); i++ {
+	for i := range rom {
 		c.memory[0x200+i] = rom[i]
 	}
 
 	return nil
+}
+
+func (c *Chip8) Fetch() uint16 {
+	//The high byte is cast to a uint16 (16-bit unsigned integer) and shifted left by 8 bits.
+	//Same for the low part of instruction located on the next address and ORs it with the high part
+
+	opcode := uint16(c.memory[c.pc])<<8 | uint16(c.memory[c.pc+1])
+	c.pc += 2
+	return opcode
+}
+
+func (c *Chip8) EmulateCycle() {
+	opcode := c.Fetch()
+
+	//0xF000 is a bitmask used to extract the first nibble (4 bits) of the opcode.
+	//CHIP-8 opcodes are designed so that the first nibble often determines the type of instruction.
+	//0x1YYY jmp to YYY
+	//0x6YYY set VY to YY
+	//0xAYYY set I to YYY
+
+	switch opcode & 0xF000 {
+
+	}
 }
