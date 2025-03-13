@@ -1,9 +1,10 @@
-package core
+package graphics
 
 import (
-	"image/color"
+	"log"
 
-	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 const (
@@ -32,13 +33,24 @@ var fontSet = []uint8{
 	0xF0, 0x80, 0xF0, 0x80, 0x80, //F
 }
 
-func (g *Graphics) Draw(screen *ebiten.Image) {
-	screen.Fill(color.Black)
-	for x := 0; x < ScreenWidth; x++ {
-		for y := 0; y < ScreenHeight; y++ {
-			if g.chip8.display[x][y] == 1 {
-				screen.Set(x, y, color.White)
-			}
-		}
+type Game struct{}
+
+func (g *Game) Update() error {
+	return nil
+}
+
+func (g *Game) Draw(screen *ebiten.Image) {
+	ebitenutil.DebugPrint(screen, "Hello, World!")
+}
+
+func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
+	return ScreenWidth * WindowScale, ScreenHeight * WindowScale
+}
+
+func Run() {
+	ebiten.SetWindowSize(ScreenWidth*WindowScale, ScreenHeight*WindowScale)
+	ebiten.SetWindowTitle(WindowTitle)
+	if err := ebiten.RunGame(&Game{}); err != nil {
+		log.Fatal(err)
 	}
 }
