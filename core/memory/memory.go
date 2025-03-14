@@ -5,7 +5,7 @@ const (
 )
 
 type Memory struct {
-	memory [MemorySize]uint8 // memory size 4k
+	Memory [MemorySize]uint8 // memory size 4k
 }
 
 func isMemoryIndexValid(index int) {
@@ -16,10 +16,10 @@ func isMemoryIndexValid(index int) {
 
 func Chip8MemorySet(m *Memory, index int, value uint8) {
 	isMemoryIndexValid(index)
-	m.memory[index] = value
+	m.Memory[index] = value
 }
 
 func Chip8MemoryGet(m *Memory, index int) uint8 {
 	isMemoryIndexValid(index)
-	return m.memory[index]
+	return m.Memory[index]
 }

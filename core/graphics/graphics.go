@@ -5,9 +5,16 @@ const (
 	ScreenHeight = 32
 	WindowTitle  = "LD-8 (Chip-8 Emulator)"
 	WindowScale  = 10
+
+	BackgroundColor = 0
+	PixelColor      = 0xFFFFFFFF
 )
 
-var fontSet = []uint8{
+type Screen struct {
+	pixels [ScreenHeight][ScreenWidth]bool
+}
+
+var FontSet = []uint8{
 	0xF0, 0x90, 0x90, 0x90, 0xF0, //0
 	0x20, 0x60, 0x20, 0x20, 0x70, //1
 	0xF0, 0x10, 0xF0, 0x80, 0xF0, //2
@@ -24,4 +31,20 @@ var fontSet = []uint8{
 	0xE0, 0x90, 0x90, 0x90, 0xE0, //D
 	0xF0, 0x80, 0xF0, 0x80, 0xF0, //E
 	0xF0, 0x80, 0xF0, 0x80, 0x80, //F
+}
+
+func isPixelIndexValid(x, y int) {
+	if x < 0 || x >= ScreenWidth || y < 0 || y >= ScreenHeight {
+		panic("[WARNING] Pixel index out of bounds")
+	}
+}
+
+func ScreenSet(screen *Screen, x, y int) {
+	isPixelIndexValid(x, y)
+	screen.pixels[y][x] = true
+}
+
+func IsScreenSet(screen *Screen, x, y int) bool {
+	isPixelIndexValid(x, y)
+	return screen.pixels[y][x]
 }

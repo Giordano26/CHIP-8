@@ -1,10 +1,15 @@
 package core
 
 import (
+	"github.com/Giordano26/chip8/core/graphics"
 	"github.com/Giordano26/chip8/core/keyboard"
 	"github.com/Giordano26/chip8/core/memory"
 	"github.com/Giordano26/chip8/core/registers"
 	"github.com/Giordano26/chip8/core/stack"
+)
+
+const (
+	FontSetLoad = 0x00
 )
 
 type Chip8 struct {
@@ -12,6 +17,7 @@ type Chip8 struct {
 	Chip8Registers registers.Registers
 	Chip8Stack     stack.Stack
 	Chip8Keyboard  keyboard.Keyboard
+	Chip8Screen    graphics.Screen
 }
 
 func stackInBounds(chip8 *Chip8) {
@@ -31,4 +37,8 @@ func StackPop(chip8 *Chip8) uint16 {
 
 	chip8.Chip8Registers.SP -= 1
 	return chip8.Chip8Stack.Stack[chip8.Chip8Registers.SP]
+}
+
+func Chip8Init(chip *Chip8) {
+	copy(chip.Chip8Memory.Memory[FontSetLoad:], graphics.FontSet[:])
 }
