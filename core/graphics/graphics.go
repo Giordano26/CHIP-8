@@ -1,12 +1,5 @@
 package graphics
 
-import (
-	"log"
-
-	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-)
-
 const (
 	ScreenWidth  = 64
 	ScreenHeight = 32
@@ -31,26 +24,4 @@ var fontSet = []uint8{
 	0xE0, 0x90, 0x90, 0x90, 0xE0, //D
 	0xF0, 0x80, 0xF0, 0x80, 0xF0, //E
 	0xF0, 0x80, 0xF0, 0x80, 0x80, //F
-}
-
-type Game struct{}
-
-func (g *Game) Update() error {
-	return nil
-}
-
-func (g *Game) Draw(screen *ebiten.Image) {
-	ebitenutil.DebugPrint(screen, "Hello, World!")
-}
-
-func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return ScreenWidth * WindowScale, ScreenHeight * WindowScale
-}
-
-func Run() {
-	ebiten.SetWindowSize(ScreenWidth*WindowScale, ScreenHeight*WindowScale)
-	ebiten.SetWindowTitle(WindowTitle)
-	if err := ebiten.RunGame(&Game{}); err != nil {
-		log.Fatal(err)
-	}
 }

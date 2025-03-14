@@ -1,6 +1,7 @@
 package core
 
 import (
+	"github.com/Giordano26/chip8/core/keyboard"
 	"github.com/Giordano26/chip8/core/memory"
 	"github.com/Giordano26/chip8/core/registers"
 	"github.com/Giordano26/chip8/core/stack"
@@ -10,6 +11,7 @@ type Chip8 struct {
 	Chip8Memory    memory.Memory
 	Chip8Registers registers.Registers
 	Chip8Stack     stack.Stack
+	Chip8Keyboard  keyboard.Keyboard
 }
 
 func stackInBounds(chip8 *Chip8) {
