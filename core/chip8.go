@@ -41,4 +41,7 @@ func StackPop(chip8 *Chip8) uint16 {
 
 func Chip8Init(chip *Chip8) {
 	copy(chip.Chip8Memory.Memory[FontSetLoad:], graphics.FontSet[:])
+	chip.Chip8Registers.PC = 0x200
+	chip.Chip8Registers.SP = 0
+	chip.Chip8Registers.I = 0
 }
