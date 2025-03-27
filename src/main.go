@@ -20,6 +20,9 @@ type Game struct {
 
 func (g *Game) Update() error {
 	keyboard.CheckKeys(&g.chip8.Chip8Keyboard)
+
+	core.CheckDelayTimer(g.chip8)
+
 	return nil
 }
 

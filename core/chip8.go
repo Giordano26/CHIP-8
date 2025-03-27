@@ -1,6 +1,8 @@
 package core
 
 import (
+	"time"
+
 	"github.com/Giordano26/chip8/core/graphics"
 	"github.com/Giordano26/chip8/core/keyboard"
 	"github.com/Giordano26/chip8/core/memory"
@@ -37,6 +39,13 @@ func StackPop(chip8 *Chip8) uint16 {
 
 	chip8.Chip8Registers.SP -= 1
 	return chip8.Chip8Stack.Stack[chip8.Chip8Registers.SP]
+}
+
+func CheckDelayTimer(chip8 *Chip8) {
+	if chip8.Chip8Registers.DelayTimer > 0 {
+		chip8.Chip8Registers.DelayTimer--
+		time.Sleep(100 * time.Millisecond)
+	}
 }
 
 func Chip8Init(chip *Chip8) {
