@@ -48,3 +48,24 @@ func IsScreenSet(screen *Screen, x, y int) bool {
 	isPixelIndexValid(x, y)
 	return screen.Pixels[y][x]
 }
+
+func DrawSprite(screen *Screen, x, y int, sprite []uint8) bool {
+	collision := false
+
+	for ly, spriteByte := range sprite {
+		for lx := range 8 {
+			if (spriteByte & (0x80 >> lx)) == 0 {
+				continue
+			}
+			py := (ly + y) % ScreenHeight
+			px := (lx + x) % ScreenWidth
+
+			if screen.Pixels[py][px] {
+				collision = true
+			}
+
+			screen.Pixels[py][px] = !screen.Pixels[py][px]
+		}
+	}
+	return collision
+}

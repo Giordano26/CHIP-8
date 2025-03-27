@@ -44,8 +44,9 @@ func main() {
 	ebiten.SetWindowTitle(graphics.WindowTitle)
 
 	chip8 := &Chip8{}
+	core.Chip8Init(chip8)
 
-	graphics.ScreenSet(&chip8.Chip8Screen, 10, 1)
+	graphics.DrawSprite(&chip8.Chip8Screen, 62, 10, chip8.Chip8Memory.Memory[0x00:0x00+5])
 
 	if err := ebiten.RunGame(&Game{chip8}); err != nil {
 		log.Fatal(err)
