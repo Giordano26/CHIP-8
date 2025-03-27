@@ -11,7 +11,7 @@ const (
 )
 
 type Screen struct {
-	pixels [ScreenHeight][ScreenWidth]bool
+	Pixels [ScreenHeight][ScreenWidth]bool
 }
 
 var FontSet = []uint8{
@@ -41,10 +41,10 @@ func isPixelIndexValid(x, y int) {
 
 func ScreenSet(screen *Screen, x, y int) {
 	isPixelIndexValid(x, y)
-	screen.pixels[y][x] = true
+	screen.Pixels[y][x] = true
 }
 
 func IsScreenSet(screen *Screen, x, y int) bool {
 	isPixelIndexValid(x, y)
-	return screen.pixels[y][x]
+	return screen.Pixels[y][x]
 }
