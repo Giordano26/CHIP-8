@@ -23,3 +23,12 @@ func Chip8MemoryGet(m *Memory, index int) uint8 {
 	isMemoryIndexValid(index)
 	return m.Memory[index]
 }
+
+func GetOpCode(m *Memory, index int) uint16 {
+	isMemoryIndexValid(index)
+
+	byte1 := Chip8MemoryGet(m, index)
+	byte2 := Chip8MemoryGet(m, index+1)
+
+	return uint16(byte1)<<8 | uint16(byte2)
+}

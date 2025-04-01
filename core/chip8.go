@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/Giordano26/chip8/core/audio"
@@ -12,7 +13,8 @@ import (
 )
 
 const (
-	FontSetLoad = 0x00
+	FontSetLoad     = 0x00
+	ProgramLoadAddr = 0x200
 )
 
 type Chip8 struct {
@@ -58,12 +60,34 @@ func CheckSoundTimer(chip8 *Chip8) {
 	}
 }
 
-func Chip8Init(chip *Chip8) {
-	copy(chip.Chip8Memory.Memory[FontSetLoad:], graphics.FontSet[:])
+func Chip8Init(chip8 *Chip8) {
+	copy(chip8.Chip8Memory.Memory[FontSetLoad:], graphics.FontSet[:])
 
-	chip.Chip8Registers.PC = 0x200
-	chip.Chip8Registers.SP = 0
-	chip.Chip8Registers.I = 0
+	chip8.Chip8Registers.SP = 0
+	chip8.Chip8Registers.I = 0
 
-	chip.Chip8Audio = *audio.NewSoundPlayer()
+	chip8.Chip8Audio = *audio.NewSoundPlayer()
+}
+
+func LoadRom(chip8 *Chip8, rom []byte) {
+
+	if len(rom)+ProgramLoadAddr > memory.MemorySize {
+		panic("[WARNING] ROM size exceeds memory size")
+	}
+	copy(chip8.Chip8Memory.Memory[ProgramLoadAddr:], rom)
+	chip8.Chip8Registers.PC = 0x200
+}
+
+func CheckNextInstruction(chip8 *Chip8) {
+	opcode := memory.GetOpCode(&chip8.Chip8Memory, int(chip8.Chip8Registers.PC))
+
+	Chip8Exec(chip8, opcode)
+
+	chip8.Chip8Registers.PC += 2
+
+	fmt.Println(opcode)
+}
+
+func Chip8Exec(chip8 *Chip8, opcode uint16) {
+
 }
