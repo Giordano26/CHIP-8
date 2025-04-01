@@ -50,7 +50,6 @@ func main() {
 
 	chip8 := &Chip8{}
 	core.Chip8Init(chip8)
-	chip8.Chip8Registers.SoundTimer = 255
 
 	graphics.DrawSprite(&chip8.Chip8Screen, 62, 10, chip8.Chip8Memory.Memory[0x00:0x00+5])
 
