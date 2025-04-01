@@ -3,6 +3,7 @@ package core
 import (
 	"time"
 
+	"github.com/Giordano26/chip8/core/audio"
 	"github.com/Giordano26/chip8/core/graphics"
 	"github.com/Giordano26/chip8/core/keyboard"
 	"github.com/Giordano26/chip8/core/memory"
@@ -20,6 +21,7 @@ type Chip8 struct {
 	Chip8Stack     stack.Stack
 	Chip8Keyboard  keyboard.Keyboard
 	Chip8Screen    graphics.Screen
+	Chip8Audio     audio.Audio
 }
 
 func stackInBounds(chip8 *Chip8) {
@@ -36,7 +38,6 @@ func StackPush(chip8 *Chip8, value uint16) {
 }
 
 func StackPop(chip8 *Chip8) uint16 {
-
 	chip8.Chip8Registers.SP -= 1
 	return chip8.Chip8Stack.Stack[chip8.Chip8Registers.SP]
 }
@@ -48,9 +49,24 @@ func CheckDelayTimer(chip8 *Chip8) {
 	}
 }
 
+func CheckSoundTimer(chip8 *Chip8) {
+	if chip8.Chip8Registers.SoundTimer > 0 {
+		chip8.Chip8Registers.SoundTimer--
+		if !chip8.Chip8Audio.IsPlaying() {
+			chip8.Chip8Audio.PlayBeep(440, 100*time.Millisecond)
+		}
+	}
+}
+
 func Chip8Init(chip *Chip8) {
+	// Initialize memory with font set
 	copy(chip.Chip8Memory.Memory[FontSetLoad:], graphics.FontSet[:])
+
+	// Initialize registers
 	chip.Chip8Registers.PC = 0x200
 	chip.Chip8Registers.SP = 0
 	chip.Chip8Registers.I = 0
+
+	// Initialize audio
+	chip.Chip8Audio = *audio.NewSoundPlayer()
 }

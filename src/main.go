@@ -22,6 +22,7 @@ func (g *Game) Update() error {
 	keyboard.CheckKeys(&g.chip8.Chip8Keyboard)
 
 	core.CheckDelayTimer(g.chip8)
+	core.CheckSoundTimer(g.chip8)
 
 	return nil
 }
@@ -45,9 +46,11 @@ func main() {
 
 	ebiten.SetWindowSize(graphics.ScreenWidth*graphics.WindowScale, graphics.ScreenHeight*graphics.WindowScale)
 	ebiten.SetWindowTitle(graphics.WindowTitle)
+	ebiten.SetTPS(60)
 
 	chip8 := &Chip8{}
 	core.Chip8Init(chip8)
+	chip8.Chip8Registers.SoundTimer = 255
 
 	graphics.DrawSprite(&chip8.Chip8Screen, 62, 10, chip8.Chip8Memory.Memory[0x00:0x00+5])
 
