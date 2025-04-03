@@ -14,13 +14,13 @@ type Keyboard struct {
 }
 
 var KeyMap = []ebiten.Key{
-	ebiten.KeyNumpad0, ebiten.KeyNumpad1,
-	ebiten.KeyNumpad2, ebiten.KeyNumpad3,
-	ebiten.KeyNumpad4, ebiten.KeyNumpad5,
-	ebiten.KeyNumpad6, ebiten.KeyNumpad7,
-	ebiten.KeyNumpad8, ebiten.KeyNumpad9,
-	ebiten.KeyZ, ebiten.KeyX, ebiten.KeyC,
-	ebiten.KeyV, ebiten.KeyB, ebiten.KeyN,
+	ebiten.KeyNumpad0, ebiten.KeyNumpad1, // 0 1
+	ebiten.KeyNumpad2, ebiten.KeyNumpad3, // 2 3
+	ebiten.KeyNumpad4, ebiten.KeyNumpad5, // 4 5
+	ebiten.KeyNumpad6, ebiten.KeyNumpad7, // 6 7
+	ebiten.KeyNumpad8, ebiten.KeyNumpad9, // 8 9
+	ebiten.KeyZ, ebiten.KeyX, ebiten.KeyC, // A B C
+	ebiten.KeyV, ebiten.KeyB, ebiten.KeyN, // D E F
 }
 
 func CheckKeys(keyboard *Keyboard) {
