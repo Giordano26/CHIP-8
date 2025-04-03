@@ -49,8 +49,8 @@ func IsScreenSet(screen *Screen, x, y int) bool {
 	return screen.Pixels[y][x]
 }
 
-func DrawSprite(screen *Screen, x, y int, sprite []uint8) bool {
-	collision := false
+func DrawSprite(screen *Screen, x, y int, sprite []uint8) uint8 {
+	var collision uint8 = 0
 
 	for ly, spriteByte := range sprite {
 		for lx := range 8 {
@@ -61,11 +61,22 @@ func DrawSprite(screen *Screen, x, y int, sprite []uint8) bool {
 			px := (lx + x) % ScreenWidth
 
 			if screen.Pixels[py][px] {
-				collision = true
+				collision = 1
 			}
 
 			screen.Pixels[py][px] = !screen.Pixels[py][px]
 		}
 	}
 	return collision
+}
+
+func ScreenClear(screen *Screen) {
+	pixels := &screen.Pixels
+
+	for y := range pixels {
+		for x := range pixels[y] {
+			pixels[y][x] = false
+		}
+	}
+
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"runtime"
 
 	"image/color"
 
@@ -46,24 +45,10 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 	return graphics.ScreenWidth, graphics.ScreenHeight
 }
 
-func getFileFilters() []string {
-	switch runtime.GOOS {
-	case "windows":
-		return []string{"*.ch8"}
-	case "darwin": // macOS
-		return []string{"ch8"}
-	case "linux":
-		return []string{"ch8"}
-	default:
-		return []string{"*.ch8"}
-	}
-}
-
 func openFile() []byte {
-	filters := getFileFilters()
 	filename, err := dialog.File().
 		Title("Open Chip-8 ROM").
-		Filter("Chip-8 ROM", filters...).
+		Filter("Chip-8 ROM", "ch8").
 		Filter("All Files", "*").
 		Load()
 
@@ -86,12 +71,10 @@ func main() {
 
 	ebiten.SetWindowSize(graphics.ScreenWidth*graphics.WindowScale, graphics.ScreenHeight*graphics.WindowScale)
 	ebiten.SetWindowTitle(graphics.WindowTitle)
-	ebiten.SetTPS(60)
+	ebiten.SetTPS(240)
 
 	chip8 := &Chip8{}
 	core.Chip8Init(chip8)
-
-	graphics.DrawSprite(&chip8.Chip8Screen, 62, 10, chip8.Chip8Memory.Memory[0x00:0x00+5])
 
 	rom := openFile()
 	core.LoadRom(chip8, rom)

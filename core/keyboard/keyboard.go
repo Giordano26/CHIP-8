@@ -1,6 +1,8 @@
 package keyboard
 
 import (
+	"fmt"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
@@ -14,11 +16,11 @@ type Keyboard struct {
 }
 
 var KeyMap = []ebiten.Key{
-	ebiten.KeyNumpad0, ebiten.KeyNumpad1, // 0 1
-	ebiten.KeyNumpad2, ebiten.KeyNumpad3, // 2 3
-	ebiten.KeyNumpad4, ebiten.KeyNumpad5, // 4 5
-	ebiten.KeyNumpad6, ebiten.KeyNumpad7, // 6 7
-	ebiten.KeyNumpad8, ebiten.KeyNumpad9, // 8 9
+	ebiten.KeyDigit0, ebiten.KeyDigit1, // 0 1
+	ebiten.KeyDigit2, ebiten.KeyDigit3, // 2 3
+	ebiten.KeyDigit4, ebiten.KeyDigit5, // 4 5
+	ebiten.KeyDigit6, ebiten.KeyDigit7, // 6 7
+	ebiten.KeyDigit8, ebiten.KeyDigit9, // 8 9
 	ebiten.KeyZ, ebiten.KeyX, ebiten.KeyC, // A B C
 	ebiten.KeyV, ebiten.KeyB, ebiten.KeyN, // D E F
 }
@@ -41,4 +43,20 @@ func keyDown(keyboard *Keyboard, key int) {
 
 func keyUp(keyboard *Keyboard, key int) {
 	keyboard.keys[key] = false
+}
+
+func IsKeyDown(keyboard *Keyboard, key int) bool {
+	return keyboard.keys[key]
+}
+
+func WaitForKeyPress() uint8 { //need to fix this ASAP
+	fmt.Println("Waiting for key press...")
+	for {
+
+		for vkey, key := range KeyMap {
+			if inpututil.IsKeyJustPressed(key) {
+				return uint8(vkey)
+			}
+		}
+	}
 }
