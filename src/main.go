@@ -32,10 +32,12 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	for x := 0; x < graphics.ScreenWidth; x++ {
-		for y := 0; y < graphics.ScreenHeight; y++ {
+	screen.Fill(color.RGBA{R: 140, G: 102, B: 23, A: 255})
+
+	for x := range graphics.ScreenWidth {
+		for y := range graphics.ScreenHeight {
 			if graphics.IsScreenSet(&g.chip8.Chip8Screen, x, y) {
-				screen.Set(x, y, color.White)
+				screen.Set(x, y, color.RGBA{247, 206, 48, 255})
 			}
 		}
 	}

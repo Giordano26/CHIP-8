@@ -1,7 +1,7 @@
 package keyboard
 
 import (
-	"fmt"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -49,14 +49,12 @@ func IsKeyDown(keyboard *Keyboard, key int) bool {
 	return keyboard.keys[key]
 }
 
-func WaitForKeyPress() uint8 { //need to fix this ASAP
-	fmt.Println("Waiting for key press...")
-	for {
-
-		for vkey, key := range KeyMap {
-			if inpututil.IsKeyJustPressed(key) {
-				return uint8(vkey)
-			}
-		}
-	}
+func WaitForKeyPress() uint8 {
+	// I cant manage a way to make a block and still do not block the ebiten loop
+	// if I block the code here and wait for input the ebiten loop will be blocked
+	// hence making the if check unreachable since no "key check" is being made
+	// generaly this opcode is used for reseting after a press so i will just assume
+	// this general purpose and use 1 as deafault case
+	time.Sleep(1000 * time.Millisecond)
+	return 1
 }

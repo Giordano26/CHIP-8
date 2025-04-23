@@ -1,0 +1,11 @@
+# macOS system files
+.DS_Store
+._*
+
+# Executable files
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dylib
