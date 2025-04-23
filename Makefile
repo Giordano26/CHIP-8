@@ -1,9 +1,10 @@
 build:
-	go build -o LD-8 src/main.go
+	mkdir -p bin
+	go build -o ./bin/LD-8 ./src/main.go
 run:
 	go run src/main.go
 clear:
-	rm LD-8 && rm LD-8.exe
+	rm -rf bin
 test:
 	go test -v tests/*
 build-windows:
