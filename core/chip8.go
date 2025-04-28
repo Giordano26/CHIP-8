@@ -62,6 +62,7 @@ func CheckSoundTimer(chip8 *Chip8) {
 
 func Chip8Init(chip8 *Chip8) {
 	copy(chip8.Chip8Memory.Memory[FontSetLoad:], graphics.FontSet[:])
+	chip8.Chip8Registers.PC = 0x200
 
 	chip8.Chip8Registers.SP = 0
 	chip8.Chip8Registers.I = 0
